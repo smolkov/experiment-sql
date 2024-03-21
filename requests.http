@@ -1,0 +1,36 @@
+@host=http://localhost:3000
+
+###
+GET {{host}}/todos
+
+###
+GET {{host}}/todos?offset=2&limit=2
+
+###
+# @name newTodo
+POST {{host}}/todos
+Content-Type: application/json
+
+{
+    "title": "Learn Rust"
+}
+
+###
+@addedTodoId={{newTodo.response.body.$.id}}
+GET {{host}}/todos/{{addedTodoId}}
+
+###
+@addedTodoId={{newTodo.response.body.$.id}}
+PATCH {{host}}/todos/{{addedTodoId}}
+Content-Type: application/json
+
+{
+    "completed": true
+}
+
+###
+@addedTodoId={{newTodo.response.body.$.id}}
+DELETE {{host}}/todos/{{addedTodoId}}
+
+###
+POST {{host}}/todos/persist
